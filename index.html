@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធបញ្ចូលទិន្នន័យសិស្ស - Web UI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Khmer+OS+Battambang&family=Khmer+OS+Muol+Light&display=swap');
+        
+        body {
+            font-family: 'Khmer OS Battambang', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h2 {
+            font-family: 'Khmer OS Muol Light', sans-serif;
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 25px;
+            font-size: 20px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="date"], input[type="tel"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            border-color: #1a73e8;
+            outline: none;
+        }
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>ប្រព័ន្ធគ្រប់គ្រង និងបញ្ចូលទិន្នន័យសិស្ស</h2>
+    <form id="studentForm">
+        
+        <div class="row">
+            <div class="form-group">
+                <label for="studentId">អត្តសញ្ញាណសិស្ស (ID) *</label>
+                <input type="text" id="studentId" placeholder="ឧទាហរណ៍: SVS-2026-001" required>
+            </div>
+            <div class="form-group">
+                <label for="studentClass">ថ្នាក់រៀន/កម្រិត *</label>
+                <input type="text" id="studentClass" placeholder="ឧទាហរណ៍: ថ្នាក់ទី ១២" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label for="khmerName">ឈ្មោះសិស្ស (ខ្មែរ) *</label>
+                <input type="text" id="khmerName" placeholder="ឧទាហរណ៍: សុខ ជា" required>
+            </div>
+            <div class="form-group">
+                <label for="latinName">ឈ្មោះសិស្ស (ឡាតាំង) *</label>
+                <input type="text" id="latinName" placeholder="ឧទាហរណ៍: SOK CHEA" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label for="gender">ភេទ *</label>
+                <select id="gender" required>
+                    <option value="">--ជ្រើសរើសភេទ--</option>
+                    <option value="ប្រុស">ប្រុស</option>
+                    <option value="ស្រី">ស្រី</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dob">ថ្ងៃខែឆ្នាំកំណើត *</label>
+                <input type="date" id="dob" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">លេខទូរស័ព្ទទំនាក់ទំនង</label>
+            <input type="tel" id="phone" placeholder="ឧទាហរណ៍: 012345678">
+        </div>
+
+        <button type="submit">បញ្ជូន និងរក្សាទុកទិន្នន័យ</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('studentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // ប្រមូលទិន្នន័យពី Form ទៅជា Object JSON
+        var payload = {
+            studentId: document.getElementById('studentId').value,
+            studentClass: document.getElementById('studentClass').value,
+            khmerName: document.getElementById('khmerName').value,
+            latinName: document.getElementById('latinName').value,
+            gender: document.getElementById('gender').value,
+            dob: document.getElementById('dob').value,
+            phone: document.getElementById('phone').value
+        };
+
+        // ⚠️ សំខាន់៖ ត្រូវយក Web app URL ពីជំហានទី ១ មកជំនួសកន្លែងនេះ
+        var webAppUrl = 'សូមដាក់_URL_របស់_Google_Apps_Script_ត្រង់នេះ';
+
+        if(webAppUrl.includes('សូមដាក់_URL_')) {
+            alert('សូមកំណត់ប្រព័ន្ធលីង Web App URL របស់លោកគ្រូ/អ្នកគ្រូជាមុនសិន!');
+            return;
+        }
+
+        // ផ្ញើទិន្នន័យទៅកាន់ Google Sheets
+        fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(function() {
+            alert('🎉 ទិន្នន័យកូនសិស្សត្រូវបានបញ្ចូលទៅក្នុង Google Sheet ដោយជោគជ័យ!');
+            document.getElementById('studentForm').reset();
+        })
+        .catch(function(error) {
+            alert('មានបញ្ហាខុសឆ្គងក្នុងការផ្ញើទិន្នន័យ៖ ' + error);
+        });
+    });
+</script>
+
+</body>
+</html>
